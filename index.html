@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Apology Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      color: white;
+    }
+    .marquee-container {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 10px 0;
+      z-index: 999;
+    }
+    .marquee {
+      font-size: 18px;
+      font-weight: bold;
+      color: yellow;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      width: 100%;
+      text-align: center;
+      animation: scrollText 10s linear infinite;
+    }
+    @keyframes scrollText {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .container {
+      max-width: 500px;
+      margin: 80px auto 50px;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(0, 0, 0, 0.8);
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    button {
+      padding: 12px 20px;
+      margin: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: white;
+      background: #ff4b5c;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #e84558;
+      transform: scale(1.05);
+    }
+    .response {
+      font-size: 20px;
+      font-weight: bold;
+      color: #ffdfdf;
+    }
+    #responseImage {
+      margin-top: 20px;
+      display: none;
+      max-width: 80%;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Moving Bulletin -->
+  <div class="marquee-container">
+    <div class="marquee">🚀 There are 10 questions! Answer them all and win a prize at the end! 🎉</div>
+  </div>
+
+  <!-- Game Section -->
+  <div class="container">
+    <h2>Apology Game</h2>
+    <p id="questionText">Click "Start Game" to begin</p>
+    <button id="startBtn" onclick="nextQuestion()">Start Game</button>
+    <button id="yesBtn" onclick="handleResponse('yes')" style="display:none;">Yes</button>
+    <button id="noBtn" onclick="handleResponse('no')" style="display:none;">No</button>
+    <p id="responseText" class="response"></p>
+    <img id="responseImage" src="JPEG image-6DD94E521D8B-1.jpeg" alt="Sorry Image" />
+  </div>
+
+<script>
+  const questions = [
+    "Sahil is an idiot.",
+    "Does Sahil forget why people get mad at him?",
+    "Sahil can't do anything right?",
+    "Does Sahil think you are beautiful?",
+    "Should Sahil be banned from talking to you?",
+    "Would you trust Sahil with your lunch order?",
+    "Is Sahil the king of dumb decisions?",
+    "Do you think Sahil's motives are pure, but he uses all his brain in the office?",
+    "Do you think he is going to get apologies this time or not?",
+    "Do you think you judge Sahil?"
+  ];
+
+  let currentQuestion = 0;
+
+  function nextQuestion() {
+    const image = document.getElementById("responseImage");
+    image.style.display = "none"; // hide image on next question
+    
+    if (currentQuestion < questions.length) {
+      document.getElementById("questionText").textContent = questions[currentQuestion];
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("yesBtn").style.display = "inline-block";
+      document.getElementById("noBtn").style.display = "inline-block";
+      document.getElementById("responseText").textContent = "";
+    } else {
+      // Game end message
+      document.getElementById("questionText").textContent = "🎉 Congratulations! You've answered all the questions!";
+      document.getElementById("yesBtn").style.display = "none";
+      document.getElementById("noBtn").style.display = "none";
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("responseText").textContent = "You win the grand prize of Sahil's eternal apologies! 😂";
+    }
+  }
+
+  function handleResponse(choice) {
+    const responseElement = document.getElementById("responseText");
+    const image = document.getElementById("responseImage");
+
+    // Clear previous image if any
+    image.style.display = "none";
+
+    switch(currentQuestion) {
+      case 3: // Question 4 (index 3)
+        if (choice === "yes") {
+          responseElement.textContent = "He thinks you are the most beautiful girl.";
+          image.style.display = "block";
+        } else {
+          responseElement.textContent = "You should use glasses and kick Sahil with your heels.";
+        }
+        break;
+
+      case 5: // Question 6 (index 5)
+        if (choice === "yes") {
+          responseElement.textContent = "I am sorry!";
+          image.style.display = "block";
+        } else {
+          responseElement.textContent = "Yes, he can do one thing right.";
+        }
+        break;
+
+      case 8: // Question 9 (index 8)
+        // Same for both yes/no
+        responseElement.textContent = "Yes, he deserves all the chances.";
+        break;
+
+      case 9: // Question 10 (index 9)
+        if (choice === "yes") {
+          responseElement.textContent = "Only judge his bad English which he says only to talk to you.";
+        } else {
+          responseElement.textContent = "Then why did you bring the brown top?";
+        }
+        break;
+
+      default:
+        // Default response for all other questions
+        if (choice === "yes") {
+          responseElement.textContent = "I am sorry!";
+          image.style.display = "block";
+        } else {
+          responseElement.textContent = "No, he is an idiot!";
+        }
+    }
+
+    currentQuestion++;
+
+    // Show Next Question button
+    const startBtn = document.getElementById("startBtn");
+    startBtn.textContent = "Next Question";
+    startBtn.style.display = "inline-block";
+    startBtn.setAttribute("onclick", "nextQuestion()");
+
+    // Hide Yes/No buttons until next question
+    document.getElementById("yesBtn").style.display = "none";
+    document.getElementById("noBtn").style.display = "none";
+  }
+</script>
+
+</body>
+</html>
